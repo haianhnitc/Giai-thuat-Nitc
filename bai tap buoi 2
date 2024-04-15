@@ -1,0 +1,275 @@
+// xâu con đối xứng 
+#include<bits/stdc++.h>
+using namespace std;
+int checkpalin[1003][1003];
+bool buildcheck(string s)
+{
+    int n = s.size();
+    for(int i=n-1; i>=0; --i)
+    {
+        checkpalin[i][i]=1;
+        for(int j=i+1; j<n; ++j)
+        {
+            checkpalin[i][j] = (s[i]==s[j]) && (s[i+1]==s[j-1]);
+        }
+    }
+}
+bool checksubs(int l, int r)
+{
+    return checkpalin[l][r];
+}
+int main()
+{
+    string s;
+    cin >> s;
+    int l, r;
+    cin >> l >> r;
+    buildcheck(s);
+    cout << checksubs(l, r);
+}
+
+// bai 2 xu li xau
+#include<bits/stdc++.h>
+using namespace std;
+string truncatestring(string s)
+{
+    bool kt=true;
+    while(kt && s.size() > 0)
+    {
+        kt = false;
+        if((s[0]-'0')%3==0) 
+        {
+            s.erase(0, 1);
+            kt=true;
+        }
+        else
+        {
+            if((s[s.size()-1] - '0')%3==0)
+            {
+                s.erase(s.size()-1, 1);
+                kt=true;
+            }
+            else
+            {
+                if((s[0]+s[s.size()-1]-96) % 3 == 0)
+                {
+                    kt=true;
+                    s.erase(s.size()-1, 1);
+                    s.erase(0, 1);
+                }
+            }
+        }
+    }
+    return s;
+}
+int main()
+{
+    string s;
+    cin >> s;
+    cout << truncatestring(s);
+}
+
+//chuan hoa xau 
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    string s;
+    getline(cin,s);
+    string v="",v1="";
+    for(int i=0; i<s.length(); i++)
+    {
+        if(s[i]>='A'&&s[i]<='Z'){
+            v += s[i]+32;
+        }
+        else if(s[i]=='?'){
+            continue;
+        }
+        else if((s[i]>='a' && s[i]<='z') || (s[i]>='0' && s[i]<='9')){
+            v += s[i];
+        }
+        else if(s[i]==','){
+            v+=", ";
+        }
+        else{
+            v+=" ";
+        }
+    }
+    bool tmp1=0, tmp2=0;
+    for(int i=0; i<v.length(); i++){
+       if(v[i]!=' '&&v[i]!=',')
+       {
+           v1+=v[i];
+           tmp1=0;
+           tmp2=0;
+       }
+       else if(v[i]==' ')
+       {
+           if(tmp1==0)
+       {
+           v1+=v[i];
+           tmp1=1;
+       }
+           else continue;
+       }
+       else
+       {
+           if(tmp1==1)
+           {
+              v1.pop_back(); 
+              tmp1=0;
+           }
+           if(tmp2==1) v1.pop_back();
+           v1+=v[i];
+           tmp2=1;
+       }
+    }
+    if(tmp1==1) v1.pop_back();
+    if(tmp2==1) v1.pop_back();
+    v1[0]-=32;
+    v1+="?";
+    cout<<v1;
+}
+
+//so xau con khac nhau 
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    string s;
+    cin>>s;
+    int cnt=0;
+    for(int i=0;i<s.length();i++)
+    {
+        string sub="";
+        for(int j=i; j<s.length(); j++){
+            sub+=s[j];
+            if(s.find(sub)==i) cnt++;
+        }
+    }
+    cout<<cnt;
+}
+
+//cho ma trận chữ nhật, tính số lượng ô vuông 2x2 khác nhau  tồn tại trong ma trận
+#include<bits/stdc++.h>
+using namespace std;
+int diffrentsquares(vector<vector<int>> matrix)
+{
+    string s = "@";
+    string p="";
+    int d=0;
+    for(int i=0; i<matrix.size(); i++)
+    {
+        for(int j=0; j<matrix[0].size()-1; j++)
+        {
+            p="";
+            p= p + "@" + char(matrix[i][j]+48) + " " + char(matrix[i][j+1]+48) + " " + char(matrix[i+1][j]+48) + " " + char(matrix[i][j]+48) + "@ " ; 
+            if(s.find(p) < 0 || s.find(p) > s.size()-1)
+            {
+                d++;
+                s = s + p;
+            }
+        }
+    }
+    return d;
+}
+
+ // tim kiem nhi phan 
+#include<bits/stdc++.h>
+using namespace std;
+int binarysearch(int arr[], int l, int r, int x)
+{
+    if(r>=l)
+    {
+        int mid=(l+(r-1))/2;
+        if(arr[mid]==x) return mid;
+        if(arr[mid]>x) return binarysearch(arr, l, mid-1, x);
+        return binarysearch(arr, mid+1, r, x);
+    }
+    return -1;
+}
+
+//day con co tong lon nhat
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int n;
+    cin >> n;
+    vector<int>a(n);
+    for(int i=0; i<n; i++) cin >> a[i];
+    int maxsum=a[0];
+    int cursum=a[0];
+    int start=0, end=0;
+    int curstart=0;
+    for(int i=1; i<n; i++)
+    {
+        if(cursum<0)
+        {
+            cursum = a[i];
+            curstart = i;
+        }
+        else cursum += a[i];
+        if(cursum > maxsum)
+        {
+            maxsum = cursum;
+            start = curstart;
+            end = i;
+        }
+    }
+    cout << start +1 << " " << end + 1 << " " << maxsum;
+}
+
+//day con cap so cong 
+int find(vector<int>a, int i, int j)
+{
+    int k = a[j]-a[i];
+    count = 2;
+    for(int x=j+1; x<a.size(); x++)
+    {
+        if(a[x]-a[i]==k*x) count ++;
+    }
+    return count;
+}
+int longestqesence(vector<int>a)
+{
+    int max = 0;
+    for(int i=0; i<a.size(); i++)
+    {
+        for(int j=i+1; j<a.size(); j++)
+        {
+            if(max < find(a, i, j)) max=find(a, i, j);
+        }
+    }
+    return max;
+}   
+
+//hoan vi cua so nguyen tu 1....n va khong co phan tu nao lien ke cach nhau 1 don vi
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int n;
+    cin >> n;
+    if(n<=3) cout << "NO SOLUTION";
+    else 
+    {
+        int a[n];
+        int k=2;
+        for(int i=0; i<n/2; i++)
+        {
+            a[i] = k;
+            k += 2;
+        }
+        int l=1;
+        for(int i=n/2; i<n; i++)
+        {
+            a[i] = l;
+            l += 2;
+        }
+        for(int i=0; i<n; i++)
+        {
+            cout << a[i] << " ";
+        }
+    }
+}

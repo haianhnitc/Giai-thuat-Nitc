@@ -1,0 +1,390 @@
+//vị trí quân mã có thể đi tới 
+int chessknight(string cell)
+{
+    int di2[]={2;-2}, di1[]={1;-1}, dem=0, x=cell[0]-96, y=cell[1]-48;
+    for(int i=0; i<=1; i++)
+    {
+        for(int j=0; j<=1; j++)
+        {
+            if(((x-di2[i])<=8 && (x-di2[i])>=1) && ((y-di1[j])>=1 && (y-di1[j]<=8)))
+            {
+                dem++;
+            }
+        }
+        for(int i=0; i<=1; i++)
+        {
+            for(int j=0; j<=1; j++)
+            {
+                if(((x-di1[i])<=8 && (x-di1[i])>=1) && ((y-di2[j])>=1 && (y-di2[j]<=8)))
+                {
+                    dem++;
+                }
+            }
+        }
+    }
+    return dem;
+}
+
+//ma tran xoay oc
+#include<bits/stdc++.h>
+using namespace std;
+vector<vector<int>> spin(int n)
+{
+    vector<vector<int>>a;
+    vector<int>b;
+    int x=0, y=n-1, k=0;
+    for(int i=0; i<n; i++) b.push_back(1);
+    for(int i=0; i<n; i++) a.push_back(b);
+    while(k<n*n)
+    {
+        for(int i=x; i<=y; i++)
+        {
+            k++;
+            a[x][i]=k;
+        }
+        for(int i=x+1; i<=y; i++)
+        {
+            k++;
+            a[i][y]=k;
+        }
+        for(int i=y-1; i>=x; i--)
+        {
+            k++;
+            a[y][i]=k;
+        }
+        for(int i=y-1; i>=x+1; i--)
+        {
+            k++;
+            a[i][x]=k;
+        }
+        x++, y--;
+    }
+    return a;
+}
+int main()
+{
+    int n;
+    cin >> n;
+    vector<vector<int>>a = spin(n);
+    for(int i=0; i<n; i++)
+    {
+        for(int j=0; j<n; j++)
+        {
+            cout << a[i][j];
+        }
+        cout << endl;
+    }
+}
+
+
+//bai 3 ma tran
+#include<bits/stdc++.h>
+using namespace std;
+bool findpath(vector<vector<int>>a)
+{
+    int colum = a[0].size();
+    int row = a.size();
+    int columone = -1;
+    int rowone = -1;
+    int count = 2;
+    for(int i=0; i<row; i++)
+    {
+        for(int j=0; j<colum; j++)
+        {
+            if(a[i][j]==1)
+            {
+                columone = j;
+                rowone = i;
+            }
+        }
+    }
+    if(columone == -1 && rowone == -1)
+        return false;
+    while(count <= colum*row)
+    {
+        if(rowone+1 >= 0 && rowone+1 <= row && a[rowone+1][columone] == count)
+        {
+            count++;
+            rowone++;
+        }
+        else if(rowone-1 >= 0 && rowone-1 <= row && a[rowone-1][columone] == count)
+        {
+            count++;
+            rowone--;
+        }
+        else if(columone+1 >= 0 && columone+1 <= row && a[rowone][columone+1] == count)
+        {
+            count++;
+            columone++;
+        }
+        else if(columone-1 >= 0 && columone-1 <= row && a[rowone][columone-1] == count)
+        {
+            count++;
+            columone--;
+        }
+        else return false;
+    }
+    return true;
+}
+
+
+//sap xep noi bot
+void bubblesort(int arr[], int n)
+{
+    for(int i=0; i<n-1; i++)
+    {
+        for(int j=i+1; j<=n; j++)
+        {
+            if(arr[i]>arr[j])
+            {
+                int temp=arr[i];
+                arr[i]=arr[j];
+                arr[j]=temp;
+            }
+        }
+    }
+}
+
+
+//sap xep chon
+void selectionsort(int arr[], int n)
+{
+    for(int i=0; i<n-1; i++)
+    {
+        int minindex=i;
+        for(int j=i+1; j<n; j++)
+        {
+            if(arr[j]<arr[minindex]) minindex=j;
+        }
+        int temp=arr[i];
+        arr[i]=arr[minindex];
+        arr[minindex]=temp;
+    }
+}
+
+
+//sap xep chen
+void insertionsort(int arr[], int n)
+{
+    for(int i=1; i<n; i++)
+    {
+        int key=arr[i];
+        int j=i-1;
+        while(j>0 && arr[j]>key)
+        {
+            arr[j+1]=arr[j];
+            j=j-1;
+        }
+        arr[j+1]=key;
+    }
+}
+
+
+// sap xep: tongcs(a)<tongcs(b) thi a dung truoc, neu tongcs(a)=tongcs(b) thi so sanh a<b thi a dung truoc
+#include<bits/stdc++.h>
+using namespace std;
+int sum(int n)
+{
+    int s=0;
+    while(n!=0)
+    {
+        s = s + n%10;
+        n /= 10;
+    }
+    return s;
+}
+vector<int> digitalsumsort(vector<int>a)
+{
+    for(int i=0; i<a.size()-1; i++)
+    {
+        for(int j=i+1; j<a.size(); j++)
+        {
+            if(sum(a[i])>sum(a[j]) || sum(a[i])==sum(a[j]) && a[i]>a[j])
+            {
+                int temp=a[i];
+                a[i]=a[j];
+                a[j]=temp;
+            }
+        }
+    }
+    return a;
+}
+int main()
+{
+    int n;
+    cin >> n;
+    vector<int>a(n);
+    for(int i=0; i<n; i++) cin >> a[i];
+    vector<int>b = digitalsumsort(a);
+    for(int i=0; i<n; i++)
+    {
+        cout << b[i] << " ";
+    }
+}
+
+// giai thua de quy
+long giaithua(long long n)
+{
+    if(n==0) return 1;
+    return(n*giaithua(n-1))%1000000007;
+}
+
+
+// fibonacci de quy
+int fibo(int n)
+{
+    if(n==0) return 0;
+    if(n==1) return 1;
+    return (fibo(n-1) + fibo(n-2)) % 1000000007;
+}
+
+
+// fibonacci quy hoach dong
+long fibo(long number)
+{
+    vector<long>fb(number+1);
+    fb[0]=0;
+    fb[1]=1;
+    for(int i=2; i<=number; i++)
+    {
+        fb[i] = (fb[i-1] + fb[i-2]) % 1000000007;
+    }
+    return fb[number];
+}
+
+
+//sapxeptron megre sort
+void megre(int arr[], int left, int mid, int right)
+{
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+    int l[n1], r[n2];
+    for(int i=0; i<n1; i++)
+    {
+        l[i] = arr[left+i];
+    }
+    for(int j=0; j<n2; j++)
+    {
+        r[j] = arr[mid+1+j];
+    }
+    int i=0, j=0, k=left;
+    while(i<n1 && j<n2)
+    {
+        if(l[i] <= r[j])
+        {
+            arr[k] = l[i];
+            i++;
+        }
+        else 
+        {
+            arr[k] = r[j];
+            j++
+        }
+        k++;
+    }
+    while(i<n1)
+    {
+        arr[k] = l[i];
+        i++;
+        k++;
+    }
+    while(j<n2)
+    {
+        arr[k] = r[j];
+        j++;
+        k++;
+    }
+}
+void mergesort(int arr[], int left, int right)
+{
+    if(left < right)
+    {
+        int mid = left +(right - left)/2;
+        mergesort(arr, left, mid);
+        mergesort(arr, mid+1, right);
+        megre(arr, left, mid, right);
+    }
+}
+
+
+//sapxepnhanh quick sort
+void swap(int *a, int*b)
+{
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+int partition(int arr[]. int left, int right)
+{
+    int pivot = arr[left + (right-left)/2];
+    int i = left - 1;
+    for(int j=left, j<= right-1; j++)
+    {
+        if(arr[j] < pivot)
+        {
+            i++;
+            swap(&arr[i], &arr[j]);
+        }
+    }
+    swap(&arr[i+1], &arr[right]);
+    return i+1;
+}
+void quicksort(int arr[], int left, int right)
+{
+    if(left < right)
+    {
+        int pivot = partition(arr, left, right)
+        quicksort(arr, left, pivot-1);
+        quicksort(arr, pivot + 1, right);
+    }
+}
+
+
+//Bai 1 sapxep nang cao 
+void bubblesort(int arr[], int n)
+{
+    for(int i=0; i<n-1; i++)
+    {
+        for(int j=i+1; j<=n; j++)
+        {
+            if(arr[i]>arr[j])
+            {
+                int temp=arr[i];
+                arr[i]=arr[j];
+                arr[j]=temp;
+            }
+        }
+    }
+}
+int main()
+{
+    int n, k=0;
+    cin >> n;
+    int a[n];
+    for(int i=0; i<n; i++) 
+    {
+        cin >> a[i];
+        if(a[i]==-1) k++;
+    }
+    int b[n-k];
+    int j=0;
+    for(int i=0; i<n; i++)
+    {
+        if(a[i]!=-1) 
+        {
+            b[j]=a[i];
+            j++;
+        }
+    }
+    bubblesort(b, n-k);
+    j=0;
+    for(int i=0; i<n; i++)
+    {
+        if(a[i]!=-1)
+        {
+            a[i]=b[j];
+            j++;
+        }
+    }
+    for(int i=0; i<n; i++) cout << a[i] << " ";
+}

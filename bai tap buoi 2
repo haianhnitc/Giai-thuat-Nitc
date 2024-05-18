@@ -10,7 +10,7 @@ bool buildcheck(string s)
         checkpalin[i][i]=1;
         for(int j=i+1; j<n; ++j)
         {
-            checkpalin[i][j] = (s[i]==s[j]) && (s[i+1]==s[j-1]);
+            checkpalin[i][j] = (s[i]==s[j]) && (checkpalin[i+1][j-1]);
         }
     }
 }

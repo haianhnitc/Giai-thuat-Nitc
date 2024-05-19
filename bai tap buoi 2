@@ -151,27 +151,40 @@ int main()
 }
 
 //cho ma trận chữ nhật, tính số lượng ô vuông 2x2 khác nhau  tồn tại trong ma trận
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-int diffrentsquares(vector<vector<int>> matrix)
+int matran(vector<vector<int>>a, int m, int n)
 {
     string s = "@";
-    string p="";
-    int d=0;
-    for(int i=0; i<matrix.size(); i++)
+    int cnt=0;
+    for(int i=0; i<m-1; i++)
     {
-        for(int j=0; j<matrix[0].size()-1; j++)
+        for(int j=0; j<n-1; j++)
         {
-            p="";
-            p= p + "@" + char(matrix[i][j]+48) + " " + char(matrix[i][j+1]+48) + " " + char(matrix[i+1][j]+48) + " " + char(matrix[i][j]+48) + "@ " ; 
+            string p="";
+            p= p + "@" + char(a[i][j]-'0') + " " + char(a[i][j+1]-'0') + " " + char(a[i+1][j]-'0') + " " + char(a[i+1][j+1]-'0') + "@ " ; 
             if(s.find(p) < 0 || s.find(p) > s.size()-1)
             {
-                d++;
+                cnt++;
                 s = s + p;
             }
         }
     }
-    return d;
+    return cnt;
+}
+int main()
+{
+    int m,n;
+    cin >> m >> n;
+    vector<vector<int>>a(m, vector<int>(n));
+    for(int i=0; i<m; i++)
+    {
+        for(int j=0; j<n; j++)
+        {
+            cin >> a[i][j];
+        }
+    }
+    cout << matran(a, m, n);
 }
 
  // tim kiem nhi phan 
